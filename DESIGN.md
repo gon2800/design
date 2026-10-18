@@ -1,477 +1,271 @@
-# OohInsightLab Design System — DESIGN.md
-> **모든 앱 개발 시 이 파일을 참고해서 디자인 일관성을 유지할 것.**
-> **새 기능 작성 시 반드시 curl로 읽고 스타일 맞출 것:**
-> `curl https://raw.githubusercontent.com/gon2800/design/main/DESIGN.md`
+# 개인 앱 공통 디자인 규칙 (DESIGN.md)
+
+기준: **weight-note v1.0.5** (서비스워커 캐시 v30). 모든 값은 이 앱의 실제 코드에서 뽑았다.
+바로 가져다 쓰는 코드는 `snippets/` 폴더에 있다. 새 기능을 만들 때는 아래 주소로 이 파일을 먼저 읽는다.
+
+`curl https://raw.githubusercontent.com/gon2800/design/main/DESIGN.md`
+
+> **"결정 대기"** 표시가 붙은 항목은 weight-note와 골프기상청이 서로 달라서, 아직 어느 쪽을 공통으로 할지 정하지 않은 것이다. 정하기 전까지는 weight-note 값을 쓴다. 비교표는 12장.
 
 ---
 
-## 1. CSS 변수 (디자인 토큰)
+## 1. 원칙
 
-```css
-:root {
-  /* 배경 */
-  --bg: #F5F6FB;
-  --card: #FFFFFF;
+**모든 앱이 똑같이 쓰는 것**
+- 글꼴(Pretendard), 글자 크기 5단계, 간격 8px 단위
+- 글자색·회색·카드색, 카드 모서리와 그림자
+- 아이콘 종류(Lucide 선 아이콘)
+- 헤더·설정 시트·기간 탭의 모양
+- 뒤로가기 동작, 배포 때 하는 일(캐시 이름, 버전 표시)
 
-  /* 텍스트 */
-  --ink: #1F2437;
-  --sub: #7A809A;
+**앱마다 다르게 두는 것**
+- 대표색(버튼·강조 글자)과 배경색 — 앱의 분위기를 만든다
+- 앱 아이콘, 앱 고유 화면(달력, 그래프, 지도 등)
 
-  /* 선 */
-  --line: #EBEDF4;
-  --line-strong: #D3D8E6;
-
-  /* 액센트 (인디고/퍼플) */
-  --accent: #5B54E8;
-  --accent-dark: #4C46D6;
-  --accent-soft: #EEEDFD;
-
-  /* 위험/삭제 */
-  --danger: #EF6C6C;
-  --danger-soft: #FDECEC;
-
-  /* 그림자 */
-  --shadow: 0 1px 2px rgba(31,36,55,.04), 0 8px 24px rgba(31,36,55,.06);
-
-  /* 반경 */
-  --radius: 18px;
-}
-```
+대표색·배경색은 `tokens.css` 맨 위 4줄만 바꾸면 된다.
 
 ---
 
-## 2. 폰트
+## 2. 색
 
-```css
-font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
-```
+### 앱별 대표색과 배경색
 
-- 기본 크기: 16px
-- 앱 타이틀: 20px, font-weight 700, letter-spacing -0.3px
-- 탭 텍스트: 14px, font-weight 700 (비활성) / 800 (활성)
-- 카드 제목: 17px, font-weight 800
-- 라벨/보조: 11~13px, color var(--sub)
+| 앱 | 대표색 | 배경색 | 확인한 곳 |
+|---|---|---|---|
+| weight-note (My Weight) | `#5B54E8` | `#F5F6FB` | index.html, manifest |
+| 골프기상청 | `#2F8F5B` (초록, `--brand`) | `#F3EFE6` (크림, `--cream`) | app/style.css, manifest.json |
+| My Vault | `#5B54E8` | `#F5F6FB` | index.html, manifest.webmanifest |
+| calc-note | `#5B54E8` | `#F5F6FB` | index.html, manifest.webmanifest |
 
----
+weight-note, My Vault, calc-note는 지금 대표색·배경색이 똑같다. 구분이 필요하면 사용자가 정한다 (**결정 대기**).
 
-## 3. 레이아웃
+### 공통 글자색·회색·카드색 (weight-note)
 
-- 최대 너비: **430px**, margin: 0 auto
-- 좌우 패딩: 10~16px
-- 카드 간격: 10~12px margin-bottom
-- safe-area-inset 적용 필수
-
----
-
-## 4. 헤더
-
-```html
-<div class="app-header">
-  <div class="header-icon">
-    <img src="/icon-192.png" alt="앱 이름">
-  </div>
-  <span class="header-title">앱 이름</span>
-  <button class="header-settings">
-    <i class="ti ti-settings"></i>
-  </button>
-</div>
-```
-
-```css
-.app-header {
-  background: transparent;
-  padding: max(env(safe-area-inset-top), 14px) 16px 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.header-icon {
-  width: 42px; height: 42px;
-  border-radius: 13px; overflow: hidden; flex-shrink: 0;
-}
-.header-title {
-  font-size: 20px; font-weight: 700;
-  color: var(--ink); letter-spacing: -0.3px;
-}
-.header-settings {
-  margin-left: auto;
-  width: 40px; height: 40px;
-  border-radius: 9px; border: none;
-  background: transparent; color: #000;
-  font-size: 24px;
-  display: flex; align-items: center; justify-content: center;
-}
-.header-settings:active { background: rgba(0,0,0,.06); }
-```
-
----
-
-## 5. 탭바 — 견출지 스타일 (핵심)
-
-활성 탭이 아래 카드와 자연스럽게 이어지는 견출지 효과.
-
-```css
-.tab-bar {
-  display: flex;
-  padding: 0 10px;
-  overflow-x: auto;
-  background: transparent;
-}
-.tab-bar::-webkit-scrollbar { display: none; }
-
-.tab-item {
-  position: relative;
-  flex: 1; min-width: 66px;
-  padding: 11px 2px 10px;
-  text-align: center;
-  font-size: 14px; font-weight: 700;
-  color: var(--sub);
-  background: transparent;
-  border-radius: 8px 8px 0 0;
-  cursor: pointer; white-space: nowrap;
-}
-.tab-item.active {
-  background: var(--card);
-  color: var(--accent);
-  font-weight: 800;
-  border-bottom: 1px solid var(--card);
-  margin-bottom: -1px;
-}
-/* 견출지 좌우 연결 곡선 */
-.tab-item.active::before,
-.tab-item.active::after {
-  content: "";
-  position: absolute; bottom: 0;
-  width: 8px; height: 8px;
-  pointer-events: none;
-}
-.tab-item.active::before {
-  left: -8px;
-  background: radial-gradient(circle at top left, transparent 8px, var(--card) 8px);
-}
-.tab-item.active::after {
-  right: -8px;
-  background: radial-gradient(circle at top right, transparent 8px, var(--card) 8px);
-}
-.tab-item:first-child.active::before { content: none; }
-.tab-item:last-child.active::after { content: none; }
-.tab-item:first-child.active { border-top-left-radius: var(--radius); }
-.tab-item:last-child.active { border-top-right-radius: var(--radius); }
-```
-
-**주의: 탭에 이모지 아이콘 사용하지 않음. 텍스트만.**
-
----
-
-## 6. 카드
-
-```css
-.tab-card {
-  background: var(--card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 14px 14px 74px;
-  min-height: 220px;
-  position: relative;
-}
-/* 첫 번째 탭 활성 시: 왼쪽 상단 각짐 */
-.tab-card.corner-first {
-  border-radius: 0 var(--radius) var(--radius) var(--radius);
-}
-/* 마지막 탭 활성 시: 오른쪽 상단 각짐 */
-.tab-card.corner-last {
-  border-radius: var(--radius) 0 var(--radius) var(--radius);
-}
-```
-
----
-
-## 7. 탭 전환 (스와이프 포함)
-
-- 탭 클릭/탭바 스와이프 시 슬라이드 애니메이션 (.25s ease)
-- **스와이프는 탭바 영역에서만 작동** (콘텐츠 스크롤과 충돌 방지)
-- calc-note의 switchTab() 함수 참고
-
-```javascript
-// 핵심 로직
-oldPane.style.transform = `translateX(${forward ? -100 : 100}%)`;
-newPane.style.transform = 'translateX(0)';
-// transition: 'transform .25s ease'
-```
-
----
-
-## 8. 버튼
-
-### 주요 액션 (저장/확인)
-```css
-.btn-primary {
-  width: 100%; height: 46px;
-  border-radius: 14px;
-  background: var(--accent); color: #fff;
-  border: none; font-size: 16px; font-weight: 700;
-}
-.btn-primary:active { background: var(--accent-dark); }
-```
-
-### 보조 버튼
-```css
-.btn-secondary {
-  height: 40px; padding: 0 14px;
-  border-radius: 10px;
-  border: 2px solid var(--line);
-  background: var(--card); color: var(--sub);
-  font-size: 13px; font-weight: 700;
-}
-.btn-secondary:active {
-  background: var(--accent-soft);
-  color: var(--accent);
-  border-color: var(--accent);
-}
-```
-
-### 삭제 버튼 (아이콘)
-```css
-.icon-btn {
-  width: 34px; height: 34px;
-  border-radius: 9px; border: none;
-  background: var(--danger-soft); color: var(--danger);
-  font-size: 15px;
-}
-```
-
-### FAB (플로팅 추가 버튼)
-```css
-.fab {
-  position: absolute; bottom: 16px; right: 16px;
-  width: 44px; height: 44px;
-  background: var(--accent); border: none;
-  border-radius: 50%; color: #fff;
-  box-shadow: 0 2px 8px rgba(91,86,200,.4);
-  font-size: 22px;
-}
-.fab:active { background: var(--accent-dark); }
-```
-
----
-
-## 9. 입력 필드
-
-```css
-.field-row label {
-  display: block;
-  font-size: 12px; font-weight: 700;
-  color: var(--sub); margin-bottom: 5px;
-}
-.field-row input, .field-row textarea {
-  width: 100%; height: 40px;
-  border-radius: 10px;
-  border: 2px solid var(--accent);
-  padding: 0 10px;
-  font-size: 15px; font-weight: 500;
-  background: var(--card); color: var(--ink);
-}
-.field-row textarea {
-  height: auto; min-height: 64px;
-  padding: 8px 10px; resize: vertical;
-}
-.field-row select {
-  width: 100%; height: 40px;
-  border-radius: 10px;
-  border: 1.5px solid var(--line);
-  padding: 0 8px;
-  font-size: 15px; font-weight: 700;
-  background: var(--bg); color: var(--ink);
-  -webkit-appearance: none;
-}
-```
-
----
-
-## 10. 바텀 시트 (모달)
-
-```css
-.sheet {
-  position: fixed; left: 0; right: 0; bottom: 0;
-  background: var(--card);
-  border-radius: 24px 24px 0 0;
-  padding: 8px 20px calc(20px + env(safe-area-inset-bottom));
-  transform: translateY(100%);
-  transition: transform .25s cubic-bezier(.32,.72,0,1);
-  z-index: 21;
-  max-width: 430px; margin: 0 auto;
-  max-height: 86vh; overflow-y: auto;
-}
-.sheet.show { transform: translateY(0); }
-.handle {
-  width: 40px; height: 4px;
-  background: var(--line); border-radius: 3px;
-  margin: 6px auto 14px;
-}
-```
-
----
-
-## 11. 테이블
-
-```css
-.table-wrap {
-  overflow-x: auto;
-  border-radius: 12px;
-  border: 1px solid var(--line);
-}
-.data-table {
-  width: 100%; border-collapse: collapse;
-}
-.data-table th {
-  font-size: 11px; color: var(--sub); font-weight: 700;
-  text-align: center;
-  padding: 9px 10px;
-  background: var(--bg);
-  border-bottom: 1px solid var(--line);
-  white-space: nowrap;
-}
-.data-table td {
-  font-size: 13px; padding: 10px;
-  border-bottom: 1px solid var(--line);
-  color: var(--ink);
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
-/* 구분, 서비스 필드: 가운데 맞춤 */
-.data-table td:nth-child(1),
-.data-table td:nth-child(2) { text-align: center; }
-.data-table tr:last-child td { border-bottom: none; }
-.data-table tbody tr { cursor: pointer; }
-.data-table tbody tr:active { background: var(--accent-soft); }
-.badge {
-  display: inline-block;
-  padding: 3px 9px; border-radius: 7px;
-  font-size: 11px; font-weight: 700;
-  background: var(--accent-soft); color: var(--accent);
-}
-```
-
----
-
-## 12. 검색 입력
-
-```css
-.search-input {
-  width: 100%; height: 38px;
-  border-radius: 10px;
-  border: 1.5px solid var(--line);
-  padding: 0 12px;
-  font-size: 14px; font-weight: 500;
-  background: var(--bg); color: var(--ink);
-  margin-bottom: 10px;
-}
-.search-input:focus {
-  outline: none;
-  border-color: var(--accent);
-}
-```
-
----
-
-## 13. 오버레이
-
-```css
-#overlay {
-  position: fixed; inset: 0;
-  background: rgba(15,17,30,.42);
-  z-index: 20;
-  opacity: 0; pointer-events: none;
-  transition: opacity .2s ease;
-}
-#overlay.show { opacity: 1; pointer-events: auto; }
-```
-
----
-
-## 14. 토스트 알림
-
-```css
-#toast {
-  position: fixed; left: 50%; bottom: 30px;
-  transform: translateX(-50%) translateY(20px);
-  background: rgba(31,36,55,.92); color: #fff;
-  padding: 10px 18px; border-radius: 20px;
-  font-size: 13px; font-weight: 600;
-  z-index: 60; opacity: 0; pointer-events: none;
-  transition: opacity .2s ease, transform .2s ease;
-}
-#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-```
-
----
-
-## 15. 아이콘
-
-- 라이브러리: **Tabler Icons Webfont v3.19.0**
-- CDN: `https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css`
-- 사용법: `<i class="ti ti-[아이콘명]"></i>`
-
----
-
-## 16. PWA 필수 파일
-
-- `manifest.webmanifest`: 앱 메타데이터, 아이콘 경로
-- `sw.js`: 서비스워커 (오프라인 캐시)
-- `icon-192.png`: 앱 아이콘 (붓글씨 한자 캘리그라피 스타일)
-- `icon-512.png`: 스플래시 아이콘
-
-### 앱별 아이콘
-| 앱 | 한자 | 의미 |
+| 이름 | 값 | 쓰는 곳 |
 |---|---|---|
-| My Calculator | 計算 | 계산 |
-| My Weight | 體重 | 체중 |
-| My Vault | 金庫 | 금고 |
-| My Memo | 記錄 | 기록 (예정) |
+| `--ink` | `#1F2437` | 기본 글자 |
+| `--sub` | `#7A809A` | 보조 글자(회색), 라벨 |
+| `--line` | `#EBEDF4` | 구분선, 핸들 |
+| `--card` | `#FFFFFF` | 카드·시트 바탕 |
+| `--accent-soft` | `#EEEDFD` | 대표색 연한 배경 (태그, "오늘" 버튼) |
+| `--accent-ink` | `#3A33C4` | 대표색 진한 글자 (본문 강조) |
+| `--drink` | `#EF6C6C` | 삭제 글자 |
+
+회색 보조 배경: 작은 버튼·설정 줄은 `--bg`, 기간 탭 바탕은 `#EEF0F5`.
+어두운 배경(시트 뒤): `rgba(20,22,35,.4)`.
 
 ---
 
-## 17. 안드로이드 뒤로가기 방어
+## 3. 배경과 상태바
 
-PWA 설치 시 안드로이드 뒤로가기 버튼이 앱 종료로 연결되는 것을 방지.
-
-```javascript
-// 항상 히스토리 트랩 유지
-function armBackTrap(){
-  history.pushState({ myvaultTrap: true }, "");
-}
-window.addEventListener("popstate", function(){
-  if (document.querySelector(".sheet.show")){
-    closeAllSheets(); // 시트가 열려있으면 시트만 닫기
-    return;
-  }
-  armBackTrap(); // 트랩 재설정
-});
-armBackTrap(); // 앱 시작 시 실행
-```
-
----
-
-## 18. theme-color
+- 페이지 배경은 **그라데이션 없이 단색**(`--bg`). 헤더 뒤에 색을 덧입히지 않는다. (v1.0.5에서 연보라 그라데이션을 지움)
+- 아래 세 곳은 **배경색과 같은 값**으로 맞춘다. 다르면 폰 상태바가 페이지와 따로 놀아 보인다.
 
 ```html
 <meta name="theme-color" content="#F5F6FB">
 ```
+```json
+"background_color": "#F5F6FB",
+"theme_color": "#F5F6FB"
+```
 
 ---
 
-## 19. 새 앱 시작 체크리스트
+## 4. 글꼴
 
-- [ ] CSS 변수 `:root` 블록 복사
-- [ ] 헤더 구조 (아이콘 42px + 타이틀 + 설정버튼) 적용
-- [ ] 탭바 견출지 스타일 적용 (이모지 없이 텍스트만)
-- [ ] 첫/마지막 탭 `.corner-first` / `.corner-last` 적용
-- [ ] 탭 스와이프 (탭바 영역에서만)
-- [ ] FAB 버튼 우하단 배치
-- [ ] 바텀 시트 + 오버레이
-- [ ] 토스트 알림
-- [ ] safe-area-inset 패딩 적용
-- [ ] Tabler Icons webfont import
-- [ ] manifest.webmanifest + sw.js
-- [ ] 안드로이드 뒤로가기 방어 코드
-- [ ] max-width: 430px
+Pretendard (무료 글꼴, SIL OFL 1.1). 숫자는 폭이 같은 숫자(`tabular-nums`)로 써서 표·그래프에서 자릿수가 어긋나지 않게 한다.
 
+```html
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" media="print" onload="this.media='all'">
+```
+
+- `media="print"` + `onload` 는 글꼴이 늦어도 화면 그리기를 막지 않게 하는 방법이다. (처음엔 시스템 글꼴, 도착하면 교체)
+- 글꼴 이름 순서: `"Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif`
+- 숫자: `font-variant-numeric: tabular-nums; font-feature-settings: "tnum";` (weight-note는 body 전체에 적용)
+
+**서비스워커에 글꼴 캐시 넣는 방법** (`sw.js`) — 앱 파일 캐시와 따로 둬서, 배포로 캐시 이름이 바뀌어도 글꼴은 다시 받지 않는다.
+
+```js
+const FONT_CACHE="weight-note-fonts-v1";
+const FONT_HOST="https://cdn.jsdelivr.net";
+// activate에서 옛 캐시를 지울 때 FONT_CACHE는 남겨 둔다:
+//   keys.filter(k=>k!==CACHE&&k!==FONT_CACHE).map(k=>caches.delete(k))
+// fetch에서: 글꼴 주소면 캐시 우선, 없으면 받아서 저장
+if(req.url.startsWith(FONT_HOST)){
+  e.respondWith(caches.open(FONT_CACHE).then(c=>c.match(req).then(hit=> hit || fetch(req).then(res=>{
+    if(res.ok) c.put(req,res.clone()).catch(()=>{});
+    return res;
+  }))));
+  return;
+}
+```
+오프라인에서 글꼴을 못 받아도 HTML을 대신 내주지 않는다 (시스템 글꼴로 표시됨). 전체 코드는 weight-note `sw.js`.
+
+---
+
+## 5. 글자 크기와 굵기
+
+### 크기 5단계
+
+| 단계 | 크기 | 쓰는 곳 |
+|---|---|---|
+| `--fs-xs` | 11px | 라벨, 요일, 작은 태그, 설정 그룹 제목, 버전 |
+| `--fs-sm` | 13px | 기본 본문, 보조 문구, 버튼 글자, 탭 글자 |
+| `--fs-md` | 15px | 카드 제목, 달력 날짜, 시트 제목, 본문 강조 |
+| `--fs-lg` | 20px | 앱 제목, 달력 월 제목, 요약 숫자 |
+| `--fs-xl` | 26px | 입력 숫자(체중 입력) |
+
+### 굵기 규칙 (weight-note가 실제 쓰는 값)
+
+| 굵기 | 쓰는 곳 |
+|---|---|
+| 500 | 보조 문구, 라벨, 회색 설명 |
+| 600 | 설정 줄 글자, 기간 탭 비활성 |
+| 700 | 버튼, 활성 탭, 그룹 제목, 앱 제목(h1 기본값) |
+| 800 | 카드 제목, 요약 숫자, 저장 버튼 |
+
+제목은 글자 사이를 살짝 좁힌다 (`letter-spacing: -.3px`). 굵기 800은 **결정 대기** (골프기상청은 700까지만 씀, 12장).
+
+---
+
+## 6. 간격, 모서리, 그림자
+
+- 간격은 8px 단위: `--sp-1` 8px, `--sp-2` 16px, `--sp-3` 24px. 카드 바깥 간격 8px, 카드 안쪽 16px, 화면 좌우 16px.
+- 8의 배수가 아닌 값(4·6·10·12·14px)은 아이콘 옆 간격이나 작은 박스 안쪽에 한정해 쓴다.
+- 화면 최대 폭: 520px (가운데 정렬) — **결정 대기** (골프기상청 400px)
+
+| 대상 | 모서리 |
+|---|---|
+| 카드 | 18px (`--radius`) |
+| 시트 위쪽 | 24px |
+| 설정 줄·입력칸·큰 버튼 | 14px |
+| 기간 탭 바깥 / 안쪽 버튼 | 12px / 10px |
+| 헤더 버튼 | 12px |
+| 작은 박스(이전·다음 버튼, "오늘" 버튼) | 9px |
+| 앱 아이콘(헤더) | 13px |
+| 작은 태그 | 6px |
+
+**카드 그림자**: `0 1px 2px rgba(31,36,55,.04), 0 4px 16px rgba(31,36,55,.05)` — 아주 연하게.
+**시트 그림자**: 열렸을 때만 `0 -8px 40px rgba(31,36,55,.15)` (8장 참고).
+
+---
+
+## 7. 아이콘
+
+- **Lucide** 선 아이콘. 24칸 `viewBox="0 0 24 24"`, 인라인 SVG로 직접 넣는다 (외부 글꼴 불필요).
+- 선 굵기 **2**, 끝과 모서리 둥글게, 색은 글자색을 따라감 (`stroke: currentColor`, `fill: none`).
+- 크기: 헤더 톱니 20px, 이전/다음 18px, 버튼 안 작은 아이콘 16px. 크기는 부모 `font-size`로 정한다 (`.ico{width:1em;height:1em}`).
+- 선 굵기는 **결정 대기** (골프기상청은 변수 `--icon-stroke: 2`로 같은 값이지만 체크 표시만 2.4~3).
+- 이전 문서의 Tabler 아이콘 글꼴은 더 이상 쓰지 않는다.
+
+---
+
+## 8. 화면 부품
+
+### 헤더: 앱 아이콘 + 제목 + 오른쪽 톱니 버튼
+- 앱 아이콘 42×42, 모서리 13px, 제목과 간격 10px.
+- 제목 20px, 굵게, 한 줄(넘치면 …).
+- 톱니 버튼: 40×40, 모서리 12px, 흰 바탕 + 카드 그림자, 아이콘 20px. (**결정 대기**: 크기·테두리)
+- 코드: `snippets/tokens.css`(`.top`, `.brand`, `.iconbtn`), `snippets/sheet.html`(톱니 SVG)
+
+### 설정 시트 (아래에서 올라옴)
+- 위: 가운데 손잡이(40×4) → 제목 "설정" (15px, 800)
+- 내용: **그룹별 작은 회색 제목**(11px, 700, `--sub`) 아래에 설정 줄들. 줄은 `--bg` 바탕, 모서리 14px, 글자 13px/600. 줄 아래에 회색 작은 설명(`.msub`) 선택.
+- 맨 아래 **오른쪽에 버전**(예: `v1.0.5`, 11px 회색).
+- 어두운 배경을 누르면 닫힘. 코드: `snippets/sheet.html`, `snippets/sheet.css`
+
+### 캡슐형 기간 탭
+- 연회색 알약 바탕(`#EEF0F5`, 모서리 12px) 안에 버튼들. 선택된 버튼은 흰 바탕 + 진한 글자(700) + 아주 연한 그림자, 나머지는 회색 글자(600).
+- 높이 32px, 글자 13px. 예: 1주 / 1개월 / 6개월 / 전체. 코드: `snippets/tokens.css`(`.seg`)
+
+### 카드 제목 + 오른쪽 회색 보조 문구
+- 왼쪽 제목(15px, 800), 오른쪽에 회색 보조 문구(13px, 500, `--sub`, 오른쪽 정렬). 좁은 화면에서는 줄바꿈된다.
+- 코드: `snippets/tokens.css`(`.mix-title`, `.mix-sub`)
+
+---
+
+## 9. 동작 규칙
+
+1. **폰 뒤로가기는 열린 창만 닫는다.** 시트·대화상자가 열려 있으면 맨 위 창 하나만 닫고, 열린 창이 없는 홈에서는 건드리지 않아서 앱이 그대로 종료된다. (예전 "뒤로가기 방어"로 앱 종료를 막던 방식은 쓰지 않는다)
+2. **X, 바깥 터치, 저장으로 닫아도 뒤로가기 기록이 쌓이지 않는다.** 모든 닫기는 `history.back()`을 거쳐서 열 때 쌓은 기록 한 칸을 되돌린다. 코드: `snippets/back.js`
+3. **닫힌 하단 시트는 그림자를 숨긴다.** 시트가 화면 아래로 내려가 있어도 위쪽 그림자가 보이면 화면 맨 아래에 어두운 띠가 생긴다. 닫힌 상태는 `box-shadow: 0 0 0 rgba(…,0)`, 열린 상태(`.show`)에서만 진짜 그림자.
+4. **배포할 때마다 `sw.js`의 캐시 이름 번호를 +1** 한다 (예: `weight-note-v30` → `v31`). 안 올리면 폰이 옛 파일을 계속 쓴다.
+5. **설정 시트에 버전을 표시**한다 (맨 아래 오른쪽). 배포마다 같이 올린다.
+6. `sw.js`의 앱 셸 목록에는 `/index.html`을 넣지 않고 루트 `/`만 넣는다 (Cloudflare 리다이렉트 때문에).
+
+---
+
+## 10. 새 앱에 적용하는 순서
+
+`snippets/apply-checklist.md` 참고.
+
+---
+
+## 11. 파일 목록
+
+| 파일 | 내용 |
+|---|---|
+| `snippets/tokens.css` | 공통 값 + 앱별 대표색·배경색 변수, 헤더·카드·기간 탭 CSS |
+| `snippets/sheet.html`, `snippets/sheet.css` | 설정 시트 (그룹 제목, 버전, 그림자 숨김 포함) |
+| `snippets/back.js` | 뒤로가기 처리 |
+| `snippets/apply-checklist.md` | 적용 순서 체크리스트 |
+
+---
+
+## 12. 두 앱이 다른 부분 — 결정 대기
+
+weight-note와 골프기상청(app 폴더)의 실제 값. 추천은 참고용이고, 정하는 것은 사용자다. DESIGN.md의 다른 장은 일단 weight-note 값으로 적었다.
+
+| 항목 | weight-note | 골프기상청 | 추천 |
+|---|---|---|---|
+| 아이콘 선 굵기 | 2 | 2 (변수 `--icon-stroke`), 체크 표시만 2.4~3 | 2로 통일 (이미 같음). 체크 표시 예외만 정리 |
+| 헤더 앱 아이콘 | 42px, 모서리 13px | 40px, 모서리 11px | 42/13 (weight-note) |
+| 헤더 제목 크기 | 20px | 24px | 20px |
+| 헤더 버튼 | 40px, 모서리 12px, 흰 바탕+그림자, 테두리 없음 | 눈에 보이는 박스 40px(누르는 영역 44px), 모서리 12px, 흰 바탕+1px 테두리, 그림자 없음 | 누르는 영역 44px는 골프 방식이 좋음. 모양은 weight-note |
+| 카드 모서리 | 18px | 18px | 같음 (변경 없음) |
+| 카드 그림자 | 2겹, 연하게 `0 4px 16px` | 1겹 `0 1px 3px rgba(0,0,0,.06)` | 골프 쪽(더 단순) 또는 weight-note — 취향 |
+| 카드 간격/안쪽 | 바깥 8px / 안쪽 16px | 바깥 10px / 안쪽 12×16px | 8px 단위인 weight-note |
+| 화면 좌우 여백 | 16px | 16px (헤더만 18px) | 16px |
+| 화면 최대 폭 | 520px | 400px | 400px (폰 화면이라 충분, 골프 지도·카드와 맞음) 또는 유지 — 앱 성격에 따라 |
+| 본문 기본 글자 | 13px | 15px | 13px (표·달력 많은 앱) / 글이 많은 화면은 15px |
+| 글자 크기 단계 | 11/13/15/20/26 | 11/13/15/20/26 | 같음 (변경 없음) |
+| 글자 굵기 | 500/600/700/800 (800 사용) | 400/500/600/700 (700까지) | 700까지로 제한하면 더 깔끔. 카드 제목 800만 예외 가능 |
+| 숫자 폭 고정(tabular-nums) | 앱 전체 | 시간대별 날씨·D-day에만 (달력·제목에 쓰면 "11"이 벌어져 보임) | 숫자 표가 많으면 전체, 아니면 필요한 곳만 |
+| 시트 위쪽 모서리 | 24px | 18px | 24px (또는 카드와 같은 18px) |
+| 시트 바탕 | 흰색 | 크림 (페이지 배경과 같음), 안의 줄만 흰색 | 앱 배경 분위기에 맞춰 앱마다 |
+| 시트 열기/닫기 | 아래에서 올라옴(슬라이드) | 슬라이드 없이 바로 나타남(`display:none`↔표시) | weight-note 방식(부드러움) |
+| 시트 어두운 배경 | `rgba(20,22,35,.4)` | `rgba(46,38,26,.38)` (따뜻한 갈색) | 앱 배경색 계열 따라 앱마다 |
+| 시트 제목 줄 | 가운데 제목 + 손잡이, X 없음 | 왼쪽 제목 + 오른쪽 X 버튼, 손잡이 없음 | 한 가지로 통일 필요 — 사용자가 선택 |
+| 시트 그룹 제목 | 있음(작은 회색) | 없음(줄만 나열) | 그룹이 3개 이상이면 그룹 제목 사용 |
+| 시트 버전 표시 | 맨 아래 오른쪽 | 설정 시트 하단 가운데(`settings-version`, 11px 회색) | 오른쪽 아래로 통일 |
+| Pretendard 불러오는 주소 | `npm/pretendard@1.3.9/…` (+ 느려도 안 막는 방식) | `gh/orioncactus/pretendard@v1.3.9/…` (일반 방식) | 같은 npm 주소 + 안 막는 방식 |
+| 서비스워커 글꼴 캐시 | 별도 캐시(`fonts-v1`) | 글꼴 전용 처리 없음(sw.js에서 jsdelivr·글꼴 코드를 찾지 못함) | 별도 캐시 방식 |
+| 아이콘 구현 | 인라인 SVG, 크기 `1em` | 인라인 SVG, 크기 20px 고정 | 같은 방식(인라인 SVG) |
+| 기간/세그먼트 탭 | 캡슐형 있음 | 해당 부품 없음(달력·목록 구조) | 필요할 때 캡슐형 |
+
+골프기상청 값은 `app/style.css`, `app/index.html`, `app/manifest.json`에서 읽은 것이다.
+
+---
+
+## 13. 바뀐 점 (이전 DESIGN.md → 이번)
+
+| 항목 | 이전 | 이번 |
+|---|---|---|
+| 탭 | 견출지 탭 (활성 탭이 카드와 이어지는 모양, 곡선 모서리) | **캡슐 탭** (연회색 알약 안에서 선택 버튼만 흰색). 코너 각짐 처리(`corner-first/last`) 불필요 |
+| 글꼴 | 시스템 글꼴(-apple-system 등) | **Pretendard** + 서비스워커 별도 캐시 |
+| 숫자 | 규칙 없음 | `tabular-nums` |
+| 아이콘 | Tabler Icons 웹폰트 v3.19.0 | **Lucide** 선 아이콘, 인라인 SVG, 굵기 2 |
+| 글자 크기 | 11~13 / 14 / 16 / 17 / 20 등 제각각 | **5단계** 11·13·15·20·26 |
+| 굵기 | 700/800 위주, 탭 활성 800 | 500·600·700·800 용도 정리 |
+| 간격 | 10~16px 자유 | **8px 단위** (8·16·24) |
+| 카드 그림자 | `0 1px 2px …04, 0 8px 24px …06` | `0 1px 2px …04, 0 4px 16px …05` (더 연함) |
+| 화면 최대 폭 | 430px | 520px (**결정 대기**) |
+| 배경 | 헤더 뒤 투명 / 연보라 그라데이션 사용 앱 있음 | **단색**, theme-color·manifest 색과 같게 |
+| 헤더 | 아이콘 42px + 제목 + 톱니(투명 배경, 검정 24px) | 톱니를 40px 흰 박스+그림자, 아이콘 20px |
+| 카드 | 활성 탭에 맞춰 위쪽 모서리 각지게 | 항상 18px 둥글게, 탭은 카드 안으로 이동 |
+| 설정 시트 | 단순 바텀 시트(그룹·버전 없음) | **그룹별 회색 제목, 맨 아래 오른쪽 버전**, 닫힌 상태 그림자 숨김 |
+| 뒤로가기 | 항상 히스토리 트랩을 걸어 앱 종료를 막음 | **열린 창만 닫고, 홈에서는 앱 종료**. 닫을 때 기록이 쌓이지 않음 |
+| 배포 | 규칙 없음 | 배포마다 `sw.js` 캐시 이름 +1, 설정 시트에 버전 표시 |
+| 아이콘 표기 | Tabler 클래스(`ti ti-…`) | 인라인 SVG |
+| 삭제된 항목 | 탭 스와이프, 테이블, 검색 입력, FAB, 토스트, 입력 필드 상세 | 이번 개정에서 weight-note에 없는 부품은 다루지 않음. 필요한 앱은 해당 앱 코드를 참고 (이전 내용은 git 기록 `c817c2d`에 남아 있음) |

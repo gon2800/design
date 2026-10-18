@@ -1,0 +1,75 @@
+/* tokens.css — 개인 앱 공통 디자인 값 (기준: weight-note v1.0.5)
+   사용법: 이 블록을 앱의 <style> 맨 위에 복사하고, "앱마다 바꾸는 값" 4줄만 앱에 맞게 고친다.
+   나머지(공통 값)는 앱끼리 같게 둔다. */
+
+:root{
+  /* ===== 앱마다 바꾸는 값 (대표색·배경색) =====
+     배경색은 아래 세 곳과 반드시 같아야 한다:
+       <meta name="theme-color">, manifest의 theme_color, manifest의 background_color */
+  --bg:#F5F6FB;          /* 페이지 배경 (단색, 그라데이션 금지) */
+  --accent:#5B54E8;      /* 대표색 */
+  --accent-ink:#3A33C4;  /* 대표색 진한 글자용 */
+  --accent-soft:#EEEDFD; /* 대표색 연한 배경 */
+
+  /* ===== 공통 값 (바꾸지 않는다) ===== */
+  /* 색 */
+  --card:#FFFFFF;        /* 카드·시트 바탕 */
+  --ink:#1F2437;         /* 기본 글자 */
+  --sub:#7A809A;         /* 보조 글자(회색) */
+  --line:#EBEDF4;        /* 구분선·테두리 */
+  --drink:#EF6C6C;       /* 위험·삭제 글자색 */
+
+  /* 카드 모서리·그림자 */
+  --radius:18px;
+  --shadow:0 1px 2px rgba(31,36,55,.04),0 4px 16px rgba(31,36,55,.05);
+
+  /* 글자 크기 5단계: 라벨 / 본문·보조 / 카드 제목·본문 강조 / 제목·핵심 숫자 / 입력 숫자 */
+  --fs-xs:11px; --fs-sm:13px; --fs-md:15px; --fs-lg:20px; --fs-xl:26px;
+
+  /* 간격 8px 단위 */
+  --sp-1:8px; --sp-2:16px; --sp-3:24px;
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%}
+body{
+  font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
+  font-size:var(--fs-sm);
+  font-variant-numeric:tabular-nums; font-feature-settings:"tnum"; /* 숫자 폭 고정 */
+  background-color:var(--bg);   /* 단색 */
+  color:var(--ink);
+  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  -webkit-font-smoothing:antialiased;
+}
+button,input,textarea{font-family:inherit}
+
+/* Lucide 선 아이콘: 24칸 viewBox, 선 굵기 2, 끝 둥글게. 크기는 부모 font-size(보통 20px)를 따른다. */
+.ico{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
+
+/* 카드 */
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:var(--sp-2);margin-bottom:var(--sp-1)}
+.card-title{font-size:var(--fs-md);font-weight:800;letter-spacing:-.3px;margin:2px 2px var(--sp-1)}
+.card-title small{font-size:var(--fs-sm);font-weight:500;color:var(--sub);letter-spacing:-.2px}
+
+/* 카드 제목 + 오른쪽 회색 보조 문구:
+   <div class="card-title mix-title"><span>제목</span><span class="mix-sub">보조 문구</span></div> */
+.mix-title{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;column-gap:var(--sp-1);row-gap:2px}
+.mix-sub{margin-left:auto;font-size:var(--fs-sm);font-weight:500;color:var(--sub);letter-spacing:-.2px;text-align:right}
+
+/* 헤더: 앱 아이콘 + 제목 + 오른쪽 톱니 버튼 */
+.wrap{max-width:520px;margin:0 auto;padding:var(--sp-1) var(--sp-2)}
+.top{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-1) 4px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand .logo{width:42px;height:42px;border-radius:13px;object-fit:cover;display:block;flex:0 0 auto}
+.brand h1{font-size:var(--fs-lg);margin:0;letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.iconbtn{border:none;background:var(--card);width:40px;height:40px;border-radius:12px;
+  box-shadow:var(--shadow);color:var(--ink);font-size:20px;cursor:pointer;flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center;padding:0}
+
+/* 캡슐형 기간 탭: <div class="seg"><button class="on">1개월</button>…</div> */
+.seg{display:flex;gap:2px;padding:2px;margin:0 0 var(--sp-2);background:#EEF0F5;border-radius:12px}
+.seg button{flex:1;border:none;background:transparent;height:32px;border-radius:10px;
+  font-size:var(--fs-sm);font-weight:600;color:var(--sub);cursor:pointer}
+.seg button.on{background:#fff;color:var(--ink);font-weight:700;box-shadow:0 1px 2px rgba(31,36,55,.1)}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}

@@ -1,0 +1,27 @@
+/* 아래에서 올라오는 시트 + 설정 시트 CSS (weight-note v1.0.5에서 그대로). tokens.css가 먼저 있어야 한다. */
+
+.backdrop{position:fixed;inset:0;background:rgba(20,22,35,.4);opacity:0;pointer-events:none;
+  transition:opacity .2s;z-index:20}
+.backdrop.show{opacity:1;pointer-events:auto}
+
+/* 닫힌 시트는 그림자를 투명하게 숨긴다.
+   (그림자가 있으면 시트가 화면 아래로 내려가 있어도 위쪽 그림자가 화면 아래에 어두운 띠로 보인다.) */
+.sheet{position:fixed;left:0;right:0;bottom:0;background:var(--card);
+  border-radius:24px 24px 0 0;padding:var(--sp-1) var(--sp-3) calc(var(--sp-3) + env(safe-area-inset-bottom));
+  transform:translateY(100%);transition:transform .25s cubic-bezier(.32,.72,0,1),box-shadow .25s;z-index:21;
+  max-width:520px;margin:0 auto;box-shadow:0 0 0 rgba(31,36,55,0)}
+.sheet.show{transform:translateY(0);box-shadow:0 -8px 40px rgba(31,36,55,.15)}
+.handle{width:40px;height:4px;background:var(--line);border-radius:3px;margin:var(--sp-1) auto var(--sp-2)}
+.sheet .date-lab{font-size:var(--fs-md);font-weight:800;letter-spacing:-.3px;margin-bottom:var(--sp-2);text-align:center}
+
+/* 설정 시트 */
+.set{max-height:92vh;overflow-y:auto}
+.set .grp{font-size:var(--fs-xs);font-weight:700;color:var(--sub);margin:var(--sp-2) 4px var(--sp-1)}  /* 그룹별 작은 회색 제목 */
+.set .grp:first-of-type{margin-top:0}
+.set .srow{display:block;width:100%;text-align:left;border:none;background:var(--bg);border-radius:14px;
+  padding:14px 16px;margin-bottom:var(--sp-1);font-size:var(--fs-sm);font-weight:600;color:var(--ink);cursor:pointer}
+.set .srow:active{background:var(--line)}
+.set .srow[hidden]{display:none}
+.set .srow:disabled{opacity:.5;cursor:default}
+.set .srow .msub{display:block;font-size:var(--fs-xs);font-weight:500;color:var(--sub);margin-top:2px}
+.set .ver{margin-top:var(--sp-1);font-size:var(--fs-xs);color:var(--sub);text-align:right}  /* 맨 아래 오른쪽 버전 */
