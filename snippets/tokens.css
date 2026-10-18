@@ -1,5 +1,5 @@
-/* tokens.css — 개인 앱 공통 디자인 값 (기준: weight-note v1.0.5)
-   사용법: 이 블록을 앱의 <style> 맨 위에 복사하고, "앱마다 바꾸는 값" 4줄만 앱에 맞게 고친다.
+/* tokens.css — 개인 앱 공통 디자인 값 (기준: weight-note v1.0.7)
+   사용법: 이 블록을 앱의 <style> 맨 위에 복사하고, "앱마다 바꾸는 값" 5줄만 앱에 맞게 고친다.
    나머지(공통 값)는 앱끼리 같게 둔다. */
 
 :root{
@@ -10,6 +10,7 @@
   --accent:#5B54E8;      /* 대표색 */
   --accent-ink:#3A33C4;  /* 대표색 진한 글자용 */
   --accent-soft:#EEEDFD; /* 대표색 연한 배경 */
+  --fs-body:var(--fs-sm); /* 본문 기본 글자: 숫자 많은 화면 var(--fs-sm)=13px, 글 목록 위주 var(--fs-md)=15px */
 
   /* ===== 공통 값 (바꾸지 않는다) ===== */
   /* 색 */
@@ -28,13 +29,16 @@
 
   /* 간격 8px 단위 */
   --sp-1:8px; --sp-2:16px; --sp-3:24px;
+
+  /* 작은 아이콘 버튼(.ibtn) 값은 여기 한 곳에만 쓴다 (달력 화살표, 시트 X 공통) */
+  --ibtn-size:32px; --ibtn-radius:9px; --ibtn-bg:var(--bg);
 }
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0;height:100%}
 body{
   font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
-  font-size:var(--fs-sm);
+  font-size:var(--fs-body);
   font-variant-numeric:tabular-nums; font-feature-settings:"tnum"; /* 숫자 폭 고정 */
   background-color:var(--bg);   /* 단색 */
   color:var(--ink);
@@ -56,6 +60,13 @@ button,input,textarea{font-family:inherit}
 .mix-title{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;column-gap:var(--sp-1);row-gap:2px}
 .mix-sub{margin-left:auto;font-size:var(--fs-sm);font-weight:500;color:var(--sub);letter-spacing:-.2px;text-align:right}
 
+/* 작은 아이콘 버튼 (달력 이전·다음, 시트 X 등 공통). 보이는 박스 32px, 누르는 영역 44px.
+   <button class="ibtn" aria-label="닫기"><svg class="ico" viewBox="0 0 24 24">…</svg></button> */
+.ibtn{position:relative;border:none;background:var(--ibtn-bg);width:var(--ibtn-size);height:var(--ibtn-size);
+  border-radius:var(--ibtn-radius);color:var(--ink);font-size:18px;cursor:pointer;flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center;padding:0}
+.ibtn::after{content:"";position:absolute;inset:-6px} /* 32 + 6×2 = 44px 누르는 영역 */
+
 /* 헤더: 앱 아이콘 + 제목 + 오른쪽 톱니 버튼 */
 .wrap{max-width:520px;margin:0 auto;padding:var(--sp-1) var(--sp-2)}
 .top{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-1) 4px}
@@ -64,7 +75,8 @@ button,input,textarea{font-family:inherit}
 .brand h1{font-size:var(--fs-lg);margin:0;letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .iconbtn{border:none;background:var(--card);width:40px;height:40px;border-radius:12px;
   box-shadow:var(--shadow);color:var(--ink);font-size:20px;cursor:pointer;flex:0 0 auto;
-  display:flex;align-items:center;justify-content:center;padding:0}
+  position:relative;display:flex;align-items:center;justify-content:center;padding:0}
+.iconbtn::after{content:"";position:absolute;inset:-2px} /* 40 + 2×2 = 44px 누르는 영역 */
 
 /* 캡슐형 기간 탭: <div class="seg"><button class="on">1개월</button>…</div> */
 .seg{display:flex;gap:2px;padding:2px;margin:0 0 var(--sp-2);background:#EEF0F5;border-radius:12px}

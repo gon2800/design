@@ -1,4 +1,4 @@
-/* 아래에서 올라오는 시트 + 설정 시트 CSS (weight-note v1.0.5에서 그대로). tokens.css가 먼저 있어야 한다. */
+/* 아래에서 올라오는 시트 + 설정 시트 CSS (weight-note v1.0.7 기준). tokens.css가 먼저 있어야 한다. */
 
 .backdrop{position:fixed;inset:0;background:rgba(20,22,35,.4);opacity:0;pointer-events:none;
   transition:opacity .2s;z-index:20}
@@ -11,8 +11,9 @@
   transform:translateY(100%);transition:transform .25s cubic-bezier(.32,.72,0,1),box-shadow .25s;z-index:21;
   max-width:520px;margin:0 auto;box-shadow:0 0 0 rgba(31,36,55,0)}
 .sheet.show{transform:translateY(0);box-shadow:0 -8px 40px rgba(31,36,55,.15)}
-.handle{width:40px;height:4px;background:var(--line);border-radius:3px;margin:var(--sp-1) auto var(--sp-2)}
-.sheet .date-lab{font-size:var(--fs-md);font-weight:800;letter-spacing:-.3px;margin-bottom:var(--sp-2);text-align:center}
+/* 시트 제목 줄: 왼쪽 제목 + 오른쪽 X 버튼(.ibtn은 tokens.css). 손잡이 없음. */
+.sheet-head{display:flex;align-items:center;justify-content:space-between;margin:var(--sp-1) 0 var(--sp-2)}
+.sheet-title{font-size:var(--fs-md);font-weight:700;letter-spacing:-.3px}
 
 /* 설정 시트 */
 .set{max-height:92vh;overflow-y:auto}
