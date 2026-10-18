@@ -25,4 +25,4 @@
 .set .srow[hidden]{display:none}
 .set .srow:disabled{opacity:.5;cursor:default}
 .set .srow .msub{display:block;font-size:var(--fs-xs);font-weight:500;color:var(--sub);margin-top:2px}
-.set .ver{margin-top:var(--sp-1);font-size:var(--fs-xs);color:var(--sub);text-align:right}  /* 맨 아래 오른쪽 버전 */
+.set .ver{margin-top:var(--sp-1);font-size:var(--fs-xs);color:var(--sub);text-align:center}  /* 맨 아래 가운데 버전 */
