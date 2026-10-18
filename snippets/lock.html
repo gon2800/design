@@ -1,0 +1,27 @@
+<!-- 잠금 화면 틀 (My Vault v1.1.8 기준). body 안쪽, 앱 화면(#app) 앞에 둔다. lock.css, lock.js와 함께 쓴다.
+     앱 이름(제목)과 안내 문구는 앱에 맞게 바꾼다. 앱 아이콘은 잠금 화면에 넣지 않는다(지문창과 겹쳐 복잡해짐). -->
+<div id="lock-screen">
+  <div class="lock-stack">
+    <!-- 제목: Lucide "lock" 아이콘 + 앱 이름 -->
+    <div class="lock-title"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> 앱 이름</div>
+    <!-- 안내 문구 겸 오류 문구 -->
+    <div class="lock-sub" id="lock-sub">PIN 6자리를 입력하세요</div>
+    <!-- PIN 점 6개 -->
+    <div class="dots" id="dots">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    </div>
+    <!-- 숫자판 -->
+    <div class="keypad" id="keypad">
+      <button class="key" data-k="1">1</button><button class="key" data-k="2">2</button><button class="key" data-k="3">3</button>
+      <button class="key" data-k="4">4</button><button class="key" data-k="5">5</button><button class="key" data-k="6">6</button>
+      <button class="key" data-k="7">7</button><button class="key" data-k="8">8</button><button class="key" data-k="9">9</button>
+      <button class="key empty" tabindex="-1" aria-hidden="true"></button>
+      <button class="key" data-k="0">0</button>
+      <!-- 지우기: Lucide "delete" -->
+      <button class="key back" data-k="back" aria-label="지우기"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5a2 2 0 0 0-1.344.519l-6.328 5.74a1 1 0 0 0 0 1.481l6.328 5.741A2 2 0 0 0 10 19h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"/><path d="m12 9 6 6"/><path d="m18 9-6 6"/></svg></button>
+    </div>
+  </div>
+  <!-- 지문 아이콘: Lucide "fingerprint". 위치는 lock.css의 --fp-top 하나로 정한다 -->
+  <button class="fp-btn" id="fp-btn" aria-label="지문으로 열기"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/><path d="M14 13.12c0 2.38 0 6.38-1 8.88"/><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"/><path d="M2 12a10 10 0 0 1 18-6"/><path d="M2 16h.01"/><path d="M21.8 16c.2-2 .131-5.354 0-6"/><path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"/><path d="M8.65 22c.21-.66.45-1.32.57-2"/><path d="M9 6.8a6 6 0 0 1 9 5.2v2"/></svg></button>
+</div>

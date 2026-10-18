@@ -1,0 +1,81 @@
+/* lock.css — 잠금 화면 스타일 (My Vault v1.1.8 기준). tokens.css가 먼저 있어야 한다.
+   앱 고유 이름·데이터는 넣지 않았다. 위치를 맞출 때 바꾸는 값은 --fp-top 하나뿐이다. */
+
+#lock-screen{
+  --fp-top:80dvh;               /* 지문 아이콘 중심의 위치 = 화면 위에서 80% 지점. 기종이 달라 어긋나면 이 값만 고친다 */
+  --line-strong:#D3D8E6;        /* 숫자 버튼 테두리 (tokens.css에 없는 값) */
+  position:fixed;inset:0;
+  background:var(--bg);         /* 단색. 진한 색 배경은 지문창 뒤에서 눈이 부담스러워 쓰지 않는다 */
+  display:flex;flex-direction:column;align-items:center;
+  z-index:50;color:var(--ink);
+}
+#lock-screen.hidden{display:none}
+
+/* 제목·안내 문구·PIN 점·숫자판을 한 묶음으로, 지문 아이콘 위쪽에서 24px 띄워 아래에서부터 쌓는다 */
+.lock-stack{
+  position:absolute;left:0;right:0;
+  bottom:calc(100dvh - var(--fp-top) + 32px + 24px);  /* 32 = 지문 아이콘 반지름(64÷2), 24 = 띄우는 간격 */
+  display:flex;flex-direction:column;align-items:center;
+}
+.lock-title{
+  font-size:var(--fs-xl);font-weight:700;letter-spacing:-.3px;
+  display:flex;align-items:center;gap:var(--sp-1);
+}
+.lock-title .ico{font-size:24px}
+.lock-sub{                      /* 안내 문구·오류 문구 공용. 오류도 같은 진한 글자색이라 연한 배경에서 잘 읽힌다 */
+  margin-top:var(--sp-1);font-size:var(--fs-sm);color:var(--ink);font-weight:600;
+  min-height:18px;text-align:center;
+}
+
+/* PIN 점: 비어 있으면 인디고 테두리만, 입력되면 채움 */
+.dots{display:flex;gap:16px;margin:16px 0}
+.dot{
+  width:14px;height:14px;border-radius:50%;
+  border:1px solid var(--accent);background:transparent;
+  transition:transform .12s ease,background .12s ease;
+}
+.dot.filled{background:var(--accent);transform:scale(1.08)}
+.dots.shake{animation:lock-shake .38s}
+@keyframes lock-shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-10px)}
+  40%{transform:translateX(9px)}
+  60%{transform:translateX(-7px)}
+  80%{transform:translateX(5px)}
+}
+
+/* 숫자판: 흰 원 64px, 1px 회색 테두리, 누르는 동안 연한 인디고 */
+.keypad{display:grid;grid-template-columns:repeat(3,64px);gap:8px 24px}
+.key{
+  width:64px;height:64px;border-radius:50%;
+  background:#fff;border:1px solid var(--line-strong);
+  color:var(--ink);font-size:var(--fs-xl);font-weight:600;
+  display:flex;align-items:center;justify-content:center;
+}
+.key:active{background:var(--accent-soft)}
+.key.empty{background:transparent;border:none}
+.key.back{font-size:24px}       /* 지우기 버튼 */
+
+/* 지문 아이콘: 시스템 지문창의 지문 원 바로 뒤에 겹쳐 둔다 (보이는 크기 64px, 누르는 영역 72px) */
+.fp-btn{
+  position:absolute;left:50%;top:var(--fp-top);transform:translate(-50%,-50%);
+  width:72px;height:72px;border-radius:50%;
+  background:transparent;border:none;
+  color:var(--accent);font-size:64px;
+  display:flex;align-items:center;justify-content:center;
+}
+.fp-btn:active{opacity:.55}
+.fp-btn.pulse{animation:lock-pulse .5s ease}
+@keyframes lock-pulse{
+  0%{transform:translate(-50%,-50%) scale(1)}
+  50%{transform:translate(-50%,-50%) scale(1.18)}
+  100%{transform:translate(-50%,-50%) scale(1)}
+}
+.fp-btn[hidden]{display:none}   /* 지문 미지원 기기에서 아이콘을 숨기고 싶을 때(선택) */
+
+/* 높이 700px 이하 화면: 숫자 버튼 52px로 줄이고 점 간격을 좁힌다 */
+@media (max-height:700px){
+  .dots{margin:8px 0 12px}
+  .keypad{grid-template-columns:repeat(3,52px);gap:8px 24px}
+  .key{width:52px;height:52px}
+}

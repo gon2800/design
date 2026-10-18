@@ -7,3 +7,5 @@ OOH Insight LAB — 개인 앱 공통 디자인 규칙
   - `sheet.html`, `sheet.css` 설정 시트
   - `back.js` 뒤로가기 처리
   - `apply-checklist.md` 다른 앱에 적용하는 순서
+  - `lock.html`, `lock.css`, `lock.js` 잠금 화면(지문 로그인) 틀·스타일·동작 구조 (PIN 검증·암호화 없음, DESIGN.md 14장)
+  - `lock-checklist.md` 잠금 화면 적용 순서
